@@ -3,17 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>AstroFood – Premium Gold</title>
+  <title>AstroFood – v20 Premium Gold</title>
 
+  <!-- Police arabe -->
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600&display=swap" rel="stylesheet">
 
   <style>
     :root {
       --gold: #FBBF24;
-      --bg: radial-gradient(circle at top, #0f172a, #020617 65%);
-      --panel: rgba(3,7,18,0.35);
+      --gold-soft: rgba(251,191,36,0.12);
+      --bg: radial-gradient(circle at top, #0f172a, #020617 68%);
+      --panel: rgba(3,7,18,0.28);
+      --radius: 1.2rem;
     }
-    *{box-sizing:border-box;}
+    * { box-sizing: border-box; }
     body {
       margin: 0;
       background: var(--bg);
@@ -25,148 +28,199 @@
     }
     header {
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      padding: 1rem 1.5rem;
-      border-bottom: 1px solid rgba(251,191,36,0.15);
+      align-items: center;
+      padding: 1rem 1.5rem .9rem;
+      border-bottom: 1px solid rgba(251,191,36,.14);
+      backdrop-filter: blur(10px);
     }
     .brand {
       display: flex;
       gap: .75rem;
       align-items: center;
     }
-    .brand img { height: 46px; border-radius: .5rem; }
-    .lang-switch { display: flex; gap: .4rem; }
+    .brand-logo {
+      width: 44px;
+      height: 44px;
+      border-radius: .75rem;
+      background: radial-gradient(circle, rgba(251,191,36,1), rgba(2,6,23,0));
+      border: 1px solid rgba(251,191,36,.4);
+    }
+    .brand-title {
+      font-weight: 600;
+      letter-spacing: .01em;
+    }
+    .brand-sub {
+      font-size: .7rem;
+      opacity: .6;
+    }
+    .lang-switch {
+      display: flex;
+      gap: .4rem;
+    }
     .lang-switch button {
       background: transparent;
-      border: 1px solid rgba(251,191,36,0.4);
+      border: 1px solid rgba(251,191,36,.35);
       color: #fff;
       padding: .25rem .65rem;
       border-radius: 999px;
       cursor: pointer;
-      font-size: .75rem;
+      font-size: .7rem;
     }
     .lang-switch button.active {
       background: rgba(251,191,36,.25);
-      border-color: var(--gold);
+      border-color: rgba(251,191,36,.7);
     }
     main {
       display: grid;
-      grid-template-columns: 260px 1fr 270px;
+      grid-template-columns: 240px 1fr 250px;
       gap: 1rem;
-      padding: 1rem 1.5rem 5.5rem;
+      padding: 1rem 1.5rem 5.2rem;
       flex: 1;
       min-height: 0;
     }
     .zodiac {
       background: var(--panel);
       border: 1px solid rgba(251,191,36,0.03);
-      border-radius: 1.2rem;
+      border-radius: var(--radius);
       padding: .5rem;
       display: flex;
       flex-direction: column;
-      gap: .45rem;
-      max-height: calc(100vh - 7.5rem);
+      gap: .4rem;
+      max-height: calc(100vh - 7.2rem);
       overflow-y: auto;
     }
     .zodiac-item {
-      background: rgba(15,23,42,.15);
-      border-radius: .95rem;
-      padding: .45rem .7rem;
-      font-size: .78rem;
-      cursor: pointer;
+      border-radius: 1rem;
+      padding: .45rem .6rem;
+      background: rgba(15,23,42,.2);
       border: 1px solid transparent;
+      cursor: pointer;
+      transition: .15s ease-out;
     }
-    .zodiac-item small { opacity: .55; font-size: .62rem; display:block; }
+    .zodiac-item small {
+      display: block;
+      opacity: .55;
+      font-size: .6rem;
+    }
     .zodiac-item.active {
-      border-color: rgba(251,191,36,.5);
-      background: radial-gradient(circle, rgba(251,191,36,.1), rgba(2,6,23,0));
+      background: radial-gradient(circle, rgba(251,191,36,.16), rgba(15,23,42,0));
+      border: 1px solid rgba(251,191,36,.5);
+      box-shadow: 0 0 14px rgba(251,191,36,.15);
     }
     .recipes {
       background: var(--panel);
       border: 1px solid rgba(251,191,36,0.03);
-      border-radius: 1.2rem;
+      border-radius: var(--radius);
       padding: 1rem 1.1rem;
       display: flex;
       flex-direction: column;
-      gap: .7rem;
+      gap: .75rem;
       overflow-y: auto;
     }
-    .recipes h2 {
-      margin: 0;
-      font-size: 1.2rem;
+    .recipes-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
-    .recipes small { opacity: .5; }
+    .recipes-title {
+      margin: 0;
+      font-size: 1.25rem;
+    }
+    .recipes-current {
+      opacity: .65;
+      font-size: .7rem;
+    }
     .meal-card {
       background: rgba(15,23,42,.25);
-      border: 1px solid rgba(251,191,36,0.03);
+      border: 1px solid rgba(251,191,36,.02);
       border-radius: .9rem;
       padding: .6rem .75rem .7rem;
     }
-    .meal-title { font-weight: 600; margin-bottom: .25rem; }
-    .meal-meta { font-size: .7rem; opacity: .65; margin-bottom: .4rem; }
+    .meal-title {
+      font-weight: 600;
+      margin-bottom: .2rem;
+    }
+    .meal-meta {
+      font-size: .68rem;
+      opacity: .6;
+      margin-bottom: .4rem;
+    }
     .drinks {
       background: var(--panel);
       border: 1px solid rgba(251,191,36,0.03);
-      border-radius: 1.2rem;
-      padding: .8rem .8rem 1.1rem;
+      border-radius: var(--radius);
+      padding: .8rem .85rem 1rem;
       display: flex;
       flex-direction: column;
-      gap: .45rem;
-      min-width: 0;
+      gap: .55rem;
     }
-    .drinks h3 { margin: 0 0 .35rem; }
+    .drinks h3 {
+      margin: 0;
+    }
     .drink-card {
-      background: rgba(15,23,42,.35);
+      background: rgba(15,23,42,.28);
+      border-radius: .7rem;
+      padding: .35rem .5rem .4rem;
       border: 1px solid rgba(251,191,36,0.02);
-      border-radius: .65rem;
-      padding: .35rem .5rem;
-      font-size: .73rem;
+      font-size: .75rem;
     }
     footer {
       position: fixed;
       bottom: 0;
       left: 0;
       width: 100%;
-      background: radial-gradient(circle at top, rgba(15,23,42,1), rgba(2,6,23,0.6));
-      border-top: 1px solid rgba(251,191,36,0.13);
+      background: radial-gradient(circle at top, rgba(15,23,42,1), rgba(2,6,23,0.5));
+      border-top: 1px solid rgba(251,191,36,.1);
       display: flex;
       justify-content: space-between;
-      padding: .7rem 1.5rem;
+      padding: .6rem 1.5rem;
       align-items: center;
       gap: 1rem;
     }
-    .qr-block { display: flex; gap: .75rem; align-items: center; }
-    .qr-block img {
-      width: 64px;
-      height: 64px;
-      border: 1px solid rgba(251,191,36,0.3);
+    .qr-block {
+      display: flex;
+      gap: .75rem;
+      align-items: center;
+    }
+    .qr-img {
+      width: 60px;
+      height: 60px;
+      border: 1px solid rgba(251,191,36,.4);
       border-radius: .6rem;
       background: #000;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:.55rem;
+      text-align:center;
+      line-height:1.1;
+      color:rgba(251,191,36,.8);
     }
     .qr-legend {
-      font-size: .7rem;
-      line-height: 1.05;
+      font-size: .68rem;
       font-family: "Cairo", system-ui, sans-serif;
       color: var(--gold);
+      line-height: 1.1;
     }
-    @media (max-width: 1080px) {
+    .foot-meta {
+      font-size: .6rem;
+      opacity: .45;
+    }
+    @media (max-width: 1100px) {
       main { grid-template-columns: 1fr; }
-      .zodiac { flex-direction: row; flex-wrap: wrap; max-height: none; }
+      .zodiac { flex-direction: row; flex-wrap: wrap; max-height: unset; }
+      footer { flex-wrap: wrap; }
     }
   </style>
 </head>
 <body>
   <header>
     <div class="brand">
-      <!-- mets ton vrai logo ici -->
-      <img src="./assets/logo-astrofood.png" alt="AstroFood" onerror="this.style.display='none'" />
+      <div class="brand-logo"></div>
       <div>
-        <div style="font-weight:600;">AstroFood – Premium Gold</div>
-        <div style="font-size:.7rem;opacity:.6;">Recettes • Astrologie • AI</div>
+        <div class="brand-title">AstroFood – v20 Premium Gold</div>
+        <div class="brand-sub">Recettes astrologiques • 3 plats du jour • FR / EN / AR</div>
       </div>
     </div>
     <div class="lang-switch" id="lang-switch">
@@ -177,16 +231,20 @@
   </header>
 
   <main>
-    <aside class="zodiac" id="zodiac-list"></aside>
+    <aside class="zodiac" id="zodiac-list">
+      <!-- rempli en JS -->
+    </aside>
+
     <section class="recipes">
-      <h2>
-        <span id="recipes-title">Recettes du signe</span>
-        <small id="current-sign-label">Bélier</small>
-      </h2>
+      <div class="recipes-header">
+        <h2 class="recipes-title" id="recipes-title">Recettes du signe</h2>
+        <span class="recipes-current" id="current-sign-label">Bélier</span>
+      </div>
       <div id="recipes-container"></div>
     </section>
+
     <aside class="drinks">
-      <h3>Boissons</h3>
+      <h3 id="drinks-title">Boissons du jour</h3>
       <small id="drinks-subtitle" style="opacity:.6;font-size:.68rem;">État : équilibre</small>
       <div id="drinks-container"></div>
     </aside>
@@ -194,18 +252,17 @@
 
   <footer>
     <div class="qr-block">
-      <img src="./assets/qr-astrofood.png" alt="QR AstroFood" onerror="this.style.display='none'"/>
-      <div class="qr-legend">
-        Scanner pour accéder à la carte AstroFood<br />
-        بصمة فلكية – وصفات يومية
-      </div>
+      <!-- tu peux remplacer le div ci-dessous par <img src="qr.png" .../> -->
+      <div class="qr-img">QR<br/>ASTROFOOD</div>
+      <div class="qr-legend">Scanner pour voir la carte complète<br/>بصمة فلكية – وصفات يومية</div>
     </div>
-    <div style="font-size:.65rem;opacity:.5;">
-      astrofoodyprime.vercel.app • v16.1 • INiAN
+    <div class="foot-meta">
+      AstroFood Premium Gold • v20 • INiAN • 2025
     </div>
   </footer>
 
   <script>
+    // 12 signes
     const ZODIAC = [
       { id: "aries", fr: "Bélier", en: "Aries", ar: "الحمل", period: "21 mars – 19 avril" },
       { id: "taurus", fr: "Taureau", en: "Taurus", ar: "الثور", period: "20 avril – 20 mai" },
@@ -214,19 +271,38 @@
       { id: "leo", fr: "Lion", en: "Leo", ar: "الأسد", period: "23 juillet – 22 août" },
       { id: "virgo", fr: "Vierge", en: "Virgo", ar: "العذراء", period: "23 août – 22 sept." },
       { id: "libra", fr: "Balance", en: "Libra", ar: "الميزان", period: "23 sept. – 22 oct." },
-      { id: "scorpio", fr: "Scorpion", en: "Scorpio", ar: "العقرب", period: "23 oct. – 21 nov." },
-      { id: "sagittarius", fr: "Sagittaire", en: "Sagittarius", ar: "القوس", period: "22 nov. – 21 déc." },
-      { id: "capricorn", fr: "Capricorne", en: "Capricorn", ar: "الجدي", period: "22 déc. – 19 janv." },
-      { id: "aquarius", fr: "Verseau", en: "Aquarius", ar: "الدلو", period: "20 janv. – 18 fév." },
-      { id: "pisces", fr: "Poissons", en: "Pisces", ar: "الحوت", period: "19 fév. – 20 mars" }
+      { id: "scorpio", fr: "Scorpion", en: "Scorpio", ar: "العقرب", period: "23 oct – 21 nov." },
+      { id: "sagittarius", fr: "Sagittaire", en: "Sagittarius", ar: "القوس", period: "22 nov – 21 déc." },
+      { id: "capricorn", fr: "Capricorne", en: "Capricorn", ar: "الجدي", period: "22 déc – 19 janv." },
+      { id: "aquarius", fr: "Verseau", en: "Aquarius", ar: "الدلو", period: "20 janv – 18 fév." },
+      { id: "pisces", fr: "Poissons", en: "Pisces", ar: "الحوت", period: "19 fév – 20 mars" }
     ];
 
+    // 3 RECETTES seulement (comme tu as demandé)
     const DATA = {
       fr: {
         meals: [
-          { sign: "aries", meal: "Petit-déjeuner", title: "Bowl énergie bissap & avoine", calories: 420, description: "Pour Bélier : rapide, tonique, bonne humeur." },
-          { sign: "taurus", meal: "Déjeuner", title: "Thieb healthy au poisson", calories: 640, description: "Pour Taureau : plaisir + équilibre." },
-          { sign: "gemini", meal: "Dîner", title: "Wrap poulet-mangue", calories: 530, description: "Pour Gémeaux : léger, moderne, varié." }
+          {
+            sign: "aries",
+            meal: "Petit-déjeuner",
+            title: "Bowl énergie bissap & avoine",
+            calories: 420,
+            description: "Pour Bélier: rapide, tonique, bonne humeur."
+          },
+          {
+            sign: "taurus",
+            meal: "Déjeuner",
+            title: "Thieb healthy au poisson",
+            calories: 640,
+            description: "Pour Taureau: plaisir + équilibre, version allégée."
+          },
+          {
+            sign: "gemini",
+            meal: "Dîner",
+            title: "Wrap poulet-mangue léger",
+            calories: 530,
+            description: "Pour Gémeaux: léger, moderne, multi-textures."
+          }
         ],
         drinks: [
           { state: "equilibre", name: "Infusion gingembre-citron", benefit: "Drainante, bonne après repas." },
@@ -235,18 +311,60 @@
       },
       en: {
         meals: [
-          { sign: "aries", meal: "Breakfast", title: "Hibiscus energy bowl", calories: 420, description: "Fast, fiery and vitamin-rich." }
+          {
+            sign: "aries",
+            meal: "Breakfast",
+            title: "Hibiscus & oat energy bowl",
+            calories: 420,
+            description: "For Aries: fast, fiery and vitamin-rich."
+          },
+          {
+            sign: "taurus",
+            meal: "Lunch",
+            title: "Healthy Thieb with grilled fish",
+            calories: 640,
+            description: "For Taurus: full flavor, still balanced."
+          },
+          {
+            sign: "gemini",
+            meal: "Dinner",
+            title: "Light chicken & mango wrap",
+            calories: 530,
+            description: "For Gemini: light, colorful, flexible."
+          }
         ],
         drinks: [
-          { state: "equilibre", name: "Ginger-lemon infusion", benefit: "Cleansing after meals." }
+          { state: "equilibre", name: "Ginger-lemon infusion", benefit: "Cleansing after meals." },
+          { state: "equilibre", name: "Hibiscus mint juice", benefit: "Antioxidant, light energy." }
         ]
       },
       ar: {
         meals: [
-          { sign: "aries", meal: "فطور", title: "وعاء طاقة بالكركديه والشوفان", calories: 420, description: "سريع ومغذٍ." }
+          {
+            sign: "aries",
+            meal: "فطور",
+            title: "وعاء طاقة بالكركديه والشوفان",
+            calories: 420,
+            description: "لبرج الحمل: سريع، مليء بالطاقة."
+          },
+          {
+            sign: "taurus",
+            meal: "غداء",
+            title: "ثيب صحي بالسمك المشوي",
+            calories: 640,
+            description: "للثور: لذة مع توازن غذائي."
+          },
+          {
+            sign: "gemini",
+            meal: "عشاء",
+            title: "لفائف دجاج خفيفة بالمانجو",
+            calories: 530,
+            description: "للجوزاء: خفيف، متنوع، سهل الأكل."
+          }
         ],
         drinks: [
-          { state: "equilibre", name: "شاي الزنجبيل والليمون", benefit: "مهدئ بعد الوجبات." }
+          { state: "equilibre", name: "شاي الزنجبيل والليمون", benefit: "منقٍ ومهدئ بعد الوجبات." },
+          { state: "equilibre", name: "عصير الكركديه بالنعناع", benefit: "غني بمضادات الأكسدة." }
         ]
       }
     };
@@ -260,19 +378,20 @@
     const drinksContainer = document.getElementById("drinks-container");
     const drinksSubtitle = document.getElementById("drinks-subtitle");
     const currentSignLabel = document.getElementById("current-sign-label");
+    const recipesTitle = document.getElementById("recipes-title");
 
     function renderZodiac() {
       zodiacList.innerHTML = "";
       ZODIAC.forEach(z => {
-        const div = document.createElement("div");
-        div.className = "zodiac-item" + (z.id === currentSign ? " active" : "");
-        div.innerHTML = `<strong>${z[currentLang]}</strong><small>${z.period}</small>`;
-        div.onclick = () => {
+        const el = document.createElement("div");
+        el.className = "zodiac-item" + (z.id === currentSign ? " active" : "");
+        el.innerHTML = `<strong>${z[currentLang]}</strong><small>${z.period}</small>`;
+        el.onclick = () => {
           currentSign = z.id;
           renderZodiac();
           renderMeals();
         };
-        zodiacList.appendChild(div);
+        zodiacList.appendChild(el);
       });
     }
 
@@ -281,10 +400,24 @@
       const list = DATA[currentLang]?.meals || [];
       const filtered = list.filter(m => m.sign === currentSign);
       currentSignLabel.textContent = ZODIAC.find(z => z.id === currentSign)[currentLang];
+
+      // changer titre selon la langue
+      recipesTitle.textContent =
+        currentLang === "fr" ? "Recettes du signe" :
+        currentLang === "en" ? "Sign recipes" :
+        "وصفات البرج";
+
       if (filtered.length === 0) {
-        recipesContainer.innerHTML = `<p style="opacity:.6;font-size:.8rem">${currentLang==="fr"?"Aucune recette pour ce signe":"No recipe for this sign"}</p>`;
+        recipesContainer.innerHTML = `<p style="opacity:.6;font-size:.75rem;">${
+          currentLang === "fr"
+            ? "Pas de recette définie pour ce signe dans cette démo Gold."
+            : currentLang === "en"
+            ? "No recipe defined for this sign in this Gold demo."
+            : "لا توجد وصفة لهذا البرج في هذا العرض."
+        }</p>`;
         return;
       }
+
       filtered.forEach(m => {
         const card = document.createElement("div");
         card.className = "meal-card";
@@ -292,6 +425,9 @@
           <div class="meal-title">${m.title}</div>
           <div class="meal-meta">${m.meal} • ${m.calories} kcal</div>
           <div style="font-size:.7rem;opacity:.8;">${m.description}</div>
+          <button style="margin-top:.4rem;font-size:.65rem;background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.4);border-radius:999px;padding:.3rem .8rem;color:#fff;cursor:pointer;">
+            Chef-AI (à connecter)
+          </button>
         `;
         recipesContainer.appendChild(card);
       });
@@ -305,18 +441,20 @@
       list.filter(d => d.state === currentState).forEach(d => {
         const card = document.createElement("div");
         card.className = "drink-card";
-        card.innerHTML = `<strong>${d.name}</strong><br/><span style="opacity:.6;font-size:.62rem;">${d.benefit}</span>`;
+        card.innerHTML = `<strong>${d.name}</strong><br/><span style="opacity:.6;font-size:.63rem;">${d.benefit}</span>`;
         drinksContainer.appendChild(card);
       });
     }
 
-    document.getElementById("lang-switch").addEventListener("click", e => {
+    document.getElementById("lang-switch").addEventListener("click", (e) => {
       const btn = e.target.closest("button[data-lang]");
       if (!btn) return;
       currentLang = btn.dataset.lang;
       document.querySelectorAll("#lang-switch button").forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
-      renderZodiac(); renderMeals(); renderDrinks();
+      renderZodiac();
+      renderMeals();
+      renderDrinks();
     });
 
     // init

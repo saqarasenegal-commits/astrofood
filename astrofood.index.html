@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AstroFood – Test OK</title>
+  <style>
+    :root { --bg: radial-gradient(circle at top, #0f172a, #020617 65%); --gold:#FBBF24; }
+    body { margin:0; background:var(--bg); color:#fff; font-family:system-ui,-apple-system,"Segoe UI",sans-serif; min-height:100vh; }
+    header { padding:1rem 1.5rem; border-bottom:1px solid rgba(251,191,36,.25); display:flex; justify-content:space-between; align-items:center; }
+    main { padding:1.5rem; display:grid; gap:1rem; grid-template-columns:250px 1fr 230px; }
+    .box { background:rgba(3,7,18,.35); border:1px solid rgba(255,255,255,.02); border-radius:1rem; padding:.75rem; backdrop-filter:blur(6px); }
+    .zodiac-item { background:rgba(15,23,42,.3); border-radius:.7rem; padding:.45rem .5rem; margin-bottom:.35rem; cursor:pointer; }
+    .zodiac-item.active { background:rgba(251,191,36,.18); border:1px solid rgba(251,191,36,.4); }
+    .meal-card { background:rgba(15,23,42,.2); border-radius:.75rem; padding:.5rem .6rem; margin-bottom:.4rem; }
+    .drink-card { background:rgba(15,23,42,.2); border-radius:.6rem; padding:.4rem .5rem; margin-bottom:.35rem; }
+    footer { padding:1rem 1.5rem; border-top:1px solid rgba(251,191,36,.1); font-size:.7rem; opacity:.6; text-align:center; }
+    @media (max-width: 950px) { main { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1 style="margin:0;font-size:1.1rem;">AstroFood – Test statique</h1>
+      <p style="margin:.2rem 0 0;font-size:.7rem;opacity:.6;">Si tu vois ça sur Vercel 👉 c’est bon ✅</p>
+    </div>
+    <div id="lang" style="display:flex;gap:.4rem;">
+      <button data-lang="fr">FR</button>
+      <button data-lang="en">EN</button>
+      <button data-lang="ar">AR</button>
+    </div>
+  </header>
+
+  <main>
+    <aside class="box" id="zodiac"></aside>
+    <section class="box">
+      <h2 style="margin:0 0 .5rem" id="title">Recettes du signe</h2>
+      <div id="meals"></div>
+    </section>
+    <aside class="box">
+      <h3 style="margin:0 0 .4rem;">Boissons</h3>
+      <div id="drinks"></div>
+    </aside>
+  </main>
+
+  <footer>AstroFood v16 – démo 1 fichier. Ensuite on remettra l’API.</footer>
+
+  <script>
+    // 1. données intégrées (pas de fetch, pas de 404)
+    const DATA = {
+      fr: {
+        meals: [
+          { sign: "aries", meal: "Petit-déjeuner", title: "Bowl énergie bissap & avoine", calories: 420, description: "Pour Bélier: rapide, tonique, bonne humeur." },
+          { sign: "taurus", meal: "Déjeuner", title: "Thieb healthy au poisson", calories: 640, description: "Pour Taureau: plaisir + équilibre." },
+          { sign: "gemini", meal: "Dîner", title: "Wrap poulet-mangue", calories: 530, description: "Pour Gémeaux: léger, moderne, varié." }
+        ],
+        drinks: [
+          { name: "Infusion gingembre-citron", benefit: "Drainante, bonne après repas." },
+          { name: "Jus bissap menthe", benefit: "Antioxydant, petit boost." }
+        ]
+      },
+      en: {
+        meals: [
+          { sign: "aries", meal: "Breakfast", title: "Hibiscus energy bowl", calories: 420, description: "Fast, fiery and vitamin-rich." }
+        ],
+        drinks: [
+          { name: "Ginger-lemon infusion", benefit: "Cleansing after meals." }
+        ]
+      },
+      ar: {
+        meals: [
+          { sign: "aries", meal: "فطور", title: "وعاء طاقة بالكركديه والشوفان", calories: 420, description: "سريع ومغذٍ." }
+        ],
+        drinks: [
+          { name: "شاي الزنجبيل والليمون", benefit: "مهدئ بعد الوجبات." }
+        ]
+      }
+    };
+
+    const ZODIAC = [
+      { id:"aries", fr:"Bélier", en:"Aries", ar:"الحمل" },
+      { id:"taurus", fr:"Taureau", en:"Taurus", ar:"الثور" },
+      { id:"gemini", fr:"Gémeaux", en:"Gemini", ar:"الجوزاء" },
+      { id:"cancer", fr:"Cancer", en:"Cancer", ar:"السرطان" },
+      { id:"leo", fr:"Lion", en:"Leo", ar:"الأسد" },
+      { id:"virgo", fr:"Vierge", en:"Virgo", ar:"العذراء" },
+      { id:"libra", fr:"Balance", en:"Libra", ar:"الميزان" },
+      { id:"scorpio", fr:"Scorpion", en:"Scorpio", ar:"العقرب" },
+      { id:"sagittarius", fr:"Sagittaire", en:"Sagittarius", ar:"القوس" },
+      { id:"capricorn", fr:"Capricorne", en:"Capricorn", ar:"الجدي" },
+      { id:"aquarius", fr:"Verseau", en:"Aquarius", ar:"الدلو" },
+      { id:"pisces", fr:"Poissons", en:"Pisces", ar:"الحوت" }
+    ];
+
+    let currentLang = "fr";
+    let currentSign = "aries";
+
+    const zodiacBox = document.getElementById("zodiac");
+    const mealsBox = document.getElementById("meals");
+    const drinksBox = document.getElementById("drinks");
+    const titleEl = document.getElementById("title");
+
+    function renderZodiac() {
+      zodiacBox.innerHTML = "";
+      ZODIAC.forEach(z => {
+        const div = document.createElement("div");
+        div.className = "zodiac-item" + (z.id === currentSign ? " active" : "");
+        div.textContent = z[currentLang];
+        div.onclick = () => {
+          currentSign = z.id;
+          renderZodiac();
+          renderMeals();
+        };
+        zodiacBox.appendChild(div);
+      });
+    }
+
+    function renderMeals() {
+      mealsBox.innerHTML = "";
+      const allMeals = DATA[currentLang]?.meals || [];
+      const filtered = allMeals.filter(m => m.sign === currentSign);
+      titleEl.textContent =
+        currentLang === "fr" ? "Recettes du signe" :
+        currentLang === "en" ? "Sign meals" : "وجبات البرج";
+      if (filtered.length === 0) {
+        mealsBox.innerHTML = "<p style='opacity:.6;font-size:.8rem;'>Aucune recette pour ce signe dans cette langue.</p>";
+        return;
+      }
+      filtered.forEach(m => {
+        const card = document.createElement("div");
+        card.className = "meal-card";
+        card.innerHTML = `
+          <strong>${m.title}</strong><br/>
+          <small style="opacity:.6;">${m.meal} • ${m.calories} kcal</small>
+          <p style="font-size:.7rem;opacity:.7;">${m.description}</p>
+        `;
+        mealsBox.appendChild(card);
+      });
+    }
+
+    function renderDrinks() {
+      drinksBox.innerHTML = "";
+      const allDrinks = DATA[currentLang]?.drinks || [];
+      allDrinks.forEach(d => {
+        const card = document.createElement("div");
+        card.className = "drink-card";
+        card.innerHTML = `<strong>${d.name}</strong><br/><small style="opacity:.65;">${d.benefit}</small>`;
+        drinksBox.appendChild(card);
+      });
+    }
+
+    // langue
+    document.getElementById("lang").addEventListener("click", e => {
+      const btn = e.target.closest("button[data-lang]");
+      if (!btn) return;
+      currentLang = btn.dataset.lang;
+      renderZodiac();
+      renderMeals();
+      renderDrinks();
+    });
+
+    // init
+    renderZodiac();
+    renderMeals();
+    renderDrinks();
+  </script>
+</body>
+</html>
